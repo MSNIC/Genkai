@@ -195,6 +195,11 @@ const menuDef = computed<SuperMenuDef[]>(() => [{
 		to: '/admin/moderation',
 		active: currentPage.value?.route.name === 'moderation',
 	}, {
+		icon: 'ti ti-user-check',
+		text: i18n.ts.approvalManagement,
+		to: '/admin/approvals',
+		active: currentPage.value?.route.name === 'approvals',
+	}, {
 		icon: 'ti ti-mail',
 		text: i18n.ts.emailServer,
 		to: '/admin/email-settings',

@@ -162,6 +162,12 @@ export class SigninWithPasskeyApiService {
 			});
 		}
 
+		if (!user.approved) {
+			return error(403, {
+				id: '77e39a5c-1d39-47ef-8a57-404dc998362c',
+			});
+		}
+
 		const profile = await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
 
 		// Authentication was successful, but passwordless login is not enabled

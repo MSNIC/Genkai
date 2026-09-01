@@ -10,8 +10,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;">
 		<div class="_gaps_m">
-			<div v-if="instance.disableRegistration || instance.federation !== 'all'" class="_gaps_s">
-				<MkInfo v-if="instance.disableRegistration" warn>{{ i18n.ts.invitationRequiredToRegister }}</MkInfo>
+			<div v-if="instance.approvalRequiredForSignup || instance.disableRegistration || instance.federation !== 'all'" class="_gaps_s">
+				<MkInfo v-if="instance.approvalRequiredForSignup" warn>{{ i18n.ts.approvalRequiredToRegister }}</MkInfo>
+				<MkInfo v-else-if="instance.disableRegistration" warn>{{ i18n.ts.invitationRequiredToRegister }}</MkInfo>
 				<MkInfo v-if="instance.federation === 'specified'" warn>{{ i18n.ts.federationSpecified }}</MkInfo>
 				<MkInfo v-else-if="instance.federation === 'none'" warn>{{ i18n.ts.federationDisabled }}</MkInfo>
 			</div>

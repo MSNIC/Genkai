@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { IsNull } from 'typeorm';
+import { ILike, IsNull } from 'typeorm';
 import { Inject, Injectable } from '@nestjs/common';
-import type { MiMeta, UsedUsernamesRepository, UsersRepository } from '@/models/_.js';
+import type { MiMeta, UsedUsernamesRepository, UserPendingsRepository, UsersRepository } from '@/models/_.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { localUsernameSchema } from '@/models/User.js';
 import { DI } from '@/di-symbols.js';
@@ -46,6 +46,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		@Inject(DI.usedUsernamesRepository)
 		private usedUsernamesRepository: UsedUsernamesRepository,
+
+		@Inject(DI.userPendingsRepository)
+		private userPendingsRepository: UserPendingsRepository,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const exist = await this.usersRepository.countBy({
@@ -54,11 +57,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			});
 
 			const exist2 = await this.usedUsernamesRepository.countBy({ username: ps.username.toLowerCase() });
+			const pending = await this.userPendingsRepository.countBy({ username: ILike(ps.username) });
 
 			const isPreserved = this.serverSettings.preservedUsernames.map(x => x.toLowerCase()).includes(ps.username.toLowerCase());
 
 			return {
-				available: exist === 0 && exist2 === 0 && !isPreserved,
+				available: exist === 0 && exist2 === 0 && pending === 0 && !isPreserved,
 			};
 		});
 	}

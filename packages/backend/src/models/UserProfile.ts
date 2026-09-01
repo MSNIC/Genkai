@@ -42,6 +42,12 @@ export class MiUserProfile {
 	})
 	public description: string | null;
 
+	@Column('varchar', {
+		length: 2048, nullable: true,
+		comment: 'The signup reason provided by the user during registration.',
+	})
+	public signupReason: string | null;
+
 	// フォローされた際のメッセージ
 	@Column('varchar', {
 		length: 256, nullable: true,

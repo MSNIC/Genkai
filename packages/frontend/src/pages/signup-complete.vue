@@ -44,6 +44,16 @@ function submit() {
 	misskeyApi('signup-pending', {
 		code: props.code,
 	}).then(res => {
+		if ('approvalTicket' in res) {
+			return os.alert({
+				type: 'success',
+				title: i18n.ts.approvalRequestSubmitted,
+				text: i18n.tsx.approvalTicketDescription({ ticket: res.approvalTicket }),
+			}).then(() => {
+				window.location.href = `/signup-status?ticket=${encodeURIComponent(res.approvalTicket)}`;
+			});
+		}
+
 		return login(res.i, '/');
 	}).catch(() => {
 		submitting.value = false;

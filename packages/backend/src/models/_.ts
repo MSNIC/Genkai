@@ -16,6 +16,7 @@ import { MiAnnouncement } from '@/models/Announcement.js';
 import { MiAnnouncementRead } from '@/models/AnnouncementRead.js';
 import { MiAntenna } from '@/models/Antenna.js';
 import { MiApp } from '@/models/App.js';
+import { MiApprovalMessage } from '@/models/ApprovalMessage.js';
 import { MiAuthSession } from '@/models/AuthSession.js';
 import { MiAvatarDecoration } from '@/models/AvatarDecoration.js';
 import { MiBlocking } from '@/models/Blocking.js';
@@ -105,6 +106,7 @@ export {
 	MiAnnouncementRead,
 	MiAntenna,
 	MiApp,
+	MiApprovalMessage,
 	MiAvatarDecoration,
 	MiAuthSession,
 	MiBlocking,
@@ -185,6 +187,7 @@ export type AnnouncementsRepository = Repository<MiAnnouncement> & MiRepository<
 export type AnnouncementReadsRepository = Repository<MiAnnouncementRead> & MiRepository<MiAnnouncementRead>;
 export type AntennasRepository = Repository<MiAntenna> & MiRepository<MiAntenna>;
 export type AppsRepository = Repository<MiApp> & MiRepository<MiApp>;
+export type ApprovalMessagesRepository = Repository<MiApprovalMessage> & MiRepository<MiApprovalMessage>;
 export type AvatarDecorationsRepository = Repository<MiAvatarDecoration> & MiRepository<MiAvatarDecoration>;
 export type AuthSessionsRepository = Repository<MiAuthSession> & MiRepository<MiAuthSession>;
 export type BlockingsRepository = Repository<MiBlocking> & MiRepository<MiBlocking>;

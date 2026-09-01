@@ -224,6 +224,20 @@ export class MiUser {
 	})
 	public isDeleted: boolean;
 
+	@Column('boolean', {
+		default: true,
+		comment: 'Whether the User is approved.',
+	})
+	public approved: boolean;
+
+	@Index({ unique: true, where: '"approvalTicket" IS NOT NULL' })
+	@Column('varchar', {
+		length: 128,
+		nullable: true,
+		comment: 'Approval ticket number for signup approval system.',
+	})
+	public approvalTicket: string | null;
+
 	@Column('varchar', {
 		length: 128, array: true, default: '{}',
 	})

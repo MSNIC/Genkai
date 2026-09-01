@@ -119,6 +119,7 @@ export type SignupRequest = {
 	host?: string;
 	invitationCode?: string;
 	emailAddress?: string;
+	signupReason?: string;
 	'hcaptcha-response'?: string | null;
 	'g-recaptcha-response'?: string | null;
 	'turnstile-response'?: string | null;
@@ -130,14 +131,22 @@ export type SignupResponse = MeDetailed & {
 	token: string;
 };
 
+export type SignupApprovalPendingResponse = {
+	approvalTicket: string;
+};
+
+export type SignupResult = SignupResponse | SignupApprovalPendingResponse;
+
 export type SignupPendingRequest = {
 	code: string;
 };
 
-export type SignupPendingResponse = {
+export type SignupPendingSuccessResponse = {
 	id: User['id'],
 	i: string,
 };
+
+export type SignupPendingResponse = SignupPendingSuccessResponse | SignupApprovalPendingResponse;
 
 export type SigninFlowRequest = {
 	username: string;

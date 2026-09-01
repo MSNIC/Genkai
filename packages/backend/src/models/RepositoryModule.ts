@@ -14,6 +14,7 @@ import {
 	MiAnnouncementRead,
 	MiAntenna,
 	MiApp,
+	MiApprovalMessage,
 	MiAuthSession,
 	MiAvatarDecoration,
 	MiBlocking,
@@ -115,6 +116,12 @@ const $announcementReadsRepository: Provider = {
 const $appsRepository: Provider = {
 	provide: DI.appsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiApp).extend(miRepository as MiRepository<MiApp>),
+	inject: [DI.db],
+};
+
+const $approvalMessagesRepository: Provider = {
+	provide: DI.approvalMessagesRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiApprovalMessage).extend(miRepository as MiRepository<MiApprovalMessage>),
 	inject: [DI.db],
 };
 
@@ -552,6 +559,7 @@ const $reversiGamesRepository: Provider = {
 		$announcementsRepository,
 		$announcementReadsRepository,
 		$appsRepository,
+		$approvalMessagesRepository,
 		$avatarDecorationsRepository,
 		$noteFavoritesRepository,
 		$noteThreadMutingsRepository,
@@ -630,6 +638,7 @@ const $reversiGamesRepository: Provider = {
 		$announcementsRepository,
 		$announcementReadsRepository,
 		$appsRepository,
+		$approvalMessagesRepository,
 		$avatarDecorationsRepository,
 		$noteFavoritesRepository,
 		$noteThreadMutingsRepository,

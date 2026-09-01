@@ -10,9 +10,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 32px;">
 		<form class="_gaps_m" autocomplete="new-password" @submit.prevent="onSubmit">
-			<MkInput v-if="instance.disableRegistration" v-model="invitationCode" type="text" :spellcheck="false" required data-testid="signup-invitation-code">
-				<template #label>{{ i18n.ts.invitationCode }}</template>
+			<MkInput v-if="instance.disableRegistration || instance.approvalRequiredForSignup" v-model="invitationCode" type="text" :spellcheck="false" :required="instance.disableRegistration && !instance.approvalRequiredForSignup" data-testid="signup-invitation-code">
+				<template #label>{{ i18n.ts.invitationCode }} <span v-if="instance.approvalRequiredForSignup" style="opacity: 0.7;">({{ i18n.ts.optional }})</span></template>
 				<template #prefix><i class="ti ti-key"></i></template>
+				<template v-if="instance.approvalRequiredForSignup" #caption>{{ i18n.ts.invitationCodeSkipsApproval }}</template>
 			</MkInput>
 			<MkInput v-model="username" type="text" pattern="^[a-zA-Z0-9_]{1,20}$" :spellcheck="false" autocomplete="username" required data-testid="signup-username" @update:modelValue="onChangeUsername">
 				<template #label>{{ i18n.ts.username }} <div v-tooltip:dialog="i18n.ts.usernameInfo" class="_button _help"><i class="ti ti-help-circle"></i></div></template>
@@ -62,6 +63,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<span v-if="passwordRetypeState == 'not-match'" style="color: var(--MI_THEME-error)"><i class="ti ti-alert-triangle ti-fw"></i> {{ i18n.ts.passwordNotMatched }}</span>
 				</template>
 			</MkInput>
+			<MkTextarea v-if="requiresApproval" v-model="signupReason" :max="2048" required>
+				<template #label>{{ i18n.ts.signupReason }}</template>
+				<template #caption>{{ i18n.ts.signupReasonDescription }}</template>
+			</MkTextarea>
 			<MkCaptcha v-if="instance.enableHcaptcha" ref="hcaptcha" v-model="hCaptchaResponse" :class="$style.captcha" provider="hcaptcha" :sitekey="instance.hcaptchaSiteKey"/>
 			<MkCaptcha v-if="instance.enableMcaptcha" ref="mcaptcha" v-model="mCaptchaResponse" :class="$style.captcha" provider="mcaptcha" :sitekey="instance.mcaptchaSiteKey" :instanceUrl="instance.mcaptchaInstanceUrl"/>
 			<MkCaptcha v-if="instance.enableRecaptcha" ref="recaptcha" v-model="reCaptchaResponse" :class="$style.captcha" provider="recaptcha" :sitekey="instance.recaptchaSiteKey"/>
@@ -85,6 +90,7 @@ import * as Misskey from 'misskey-js';
 import * as config from '@@/js/config.js';
 import MkButton from './MkButton.vue';
 import MkInput from './MkInput.vue';
+import MkTextarea from './MkTextarea.vue';
 import type { Captcha } from '@/components/MkCaptcha.vue';
 import MkCaptcha from '@/components/MkCaptcha.vue';
 import * as os from '@/os.js';
@@ -117,6 +123,7 @@ const password = ref<string>('');
 const retypedPassword = ref<string>('');
 const invitationCode = ref<string>('');
 const email = ref('');
+const signupReason = ref<string>('');
 const usernameState = ref<null | 'wait' | 'ok' | 'unavailable' | 'error' | 'invalid-format' | 'min-range' | 'max-range'>(null);
 const emailState = ref<null | 'wait' | 'ok' | 'unavailable:used' | 'unavailable:format' | 'unavailable:disposable' | 'unavailable:banned' | 'unavailable:mx' | 'unavailable:smtp' | 'unavailable' | 'error'>(null);
 const passwordStrength = ref<'' | 'low' | 'medium' | 'high'>('');
@@ -129,18 +136,22 @@ const turnstileResponse = ref<string | null>(null);
 const testcaptchaResponse = ref<string | null>(null);
 const usernameAbortController = ref<null | AbortController>(null);
 const emailAbortController = ref<null | AbortController>(null);
+const requiresApproval = computed(() => instance.approvalRequiredForSignup && invitationCode.value.trim() === '');
 
 const shouldDisableSubmitting = computed((): boolean => {
-	return submitting.value ||
-		instance.enableHcaptcha && !hCaptchaResponse.value ||
-		instance.enableMcaptcha && !mCaptchaResponse.value ||
-		instance.enableRecaptcha && !reCaptchaResponse.value ||
-		instance.enableTurnstile && !turnstileResponse.value ||
-		instance.enableTestcaptcha && !testcaptchaResponse.value ||
-		instance.emailRequiredForSignup && emailState.value !== 'ok' ||
-		instance.disableRegistration && invitationCode.value === '' ||
-		usernameState.value !== 'ok' ||
-		passwordRetypeState.value !== 'match';
+	return [
+		submitting.value,
+		instance.enableHcaptcha && !hCaptchaResponse.value,
+		instance.enableMcaptcha && !mCaptchaResponse.value,
+		instance.enableRecaptcha && !reCaptchaResponse.value,
+		instance.enableTurnstile && !turnstileResponse.value,
+		instance.enableTestcaptcha && !testcaptchaResponse.value,
+		instance.emailRequiredForSignup && emailState.value !== 'ok',
+		instance.disableRegistration && !instance.approvalRequiredForSignup && invitationCode.value === '',
+		requiresApproval.value && signupReason.value.trim() === '',
+		usernameState.value !== 'ok',
+		passwordRetypeState.value !== 'match',
+	].some(Boolean);
 });
 
 function getPasswordStrength(source: string): number {
@@ -259,8 +270,9 @@ async function onSubmit(): Promise<void> {
 	const signupPayload: Misskey.entities.SignupRequest = {
 		username: username.value,
 		password: password.value,
-		emailAddress: email.value,
-		invitationCode: invitationCode.value,
+		emailAddress: email.value || undefined,
+		invitationCode: invitationCode.value.trim() || undefined,
+		signupReason: signupReason.value.trim() || undefined,
 		'hcaptcha-response': hCaptchaResponse.value,
 		'm-captcha-response': mCaptchaResponse.value,
 		'g-recaptcha-response': reCaptchaResponse.value,
@@ -288,8 +300,13 @@ async function onSubmit(): Promise<void> {
 			});
 			emit('signupEmailPending');
 		} else {
-			const resJson = (await res.json()) as Misskey.entities.SignupResponse;
+			const resJson = (await res.json()) as Misskey.entities.SignupResult;
 			if (_DEV_) console.log(resJson);
+
+			if ('approvalTicket' in resJson) {
+				await showApprovalPending(resJson.approvalTicket);
+				return;
+			}
 
 			emit('signup', resJson);
 
@@ -302,6 +319,16 @@ async function onSubmit(): Promise<void> {
 	}
 
 	submitting.value = false;
+}
+
+async function showApprovalPending(approvalTicket: string): Promise<void> {
+	await os.alert({
+		type: 'success',
+		title: i18n.ts.approvalRequestSubmitted,
+		text: i18n.tsx.approvalTicketDescription({ ticket: approvalTicket }),
+	});
+
+	window.location.href = `/signup-status?ticket=${encodeURIComponent(approvalTicket)}`;
 }
 
 function onSignupApiError() {

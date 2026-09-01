@@ -203,6 +203,9 @@ export const ROUTE_DEF = [{
 	path: '/signup-complete/:code',
 	component: page(() => import('@/pages/signup-complete.vue')),
 }, {
+	path: '/signup-status',
+	component: page(() => import('@/pages/signup-status.vue')),
+}, {
 	path: '/verify-email/:code',
 	component: page(() => import('@/pages/verify-email.vue')),
 }, {
@@ -470,6 +473,10 @@ export const ROUTE_DEF = [{
 		path: '/moderation',
 		name: 'moderation',
 		component: page(() => import('@/pages/admin/moderation.vue')),
+	}, {
+		path: '/approvals',
+		name: 'approvals',
+		component: page(() => import('@/pages/admin/approvals.vue')),
 	}, {
 		path: '/email-settings',
 		name: 'email-settings',

@@ -5,13 +5,14 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import bcrypt from 'bcryptjs';
-import { IsNull } from 'typeorm';
+import { ILike, IsNull } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { RegistrationTicketsRepository, UsedUsernamesRepository, UserPendingsRepository, UserProfilesRepository, UsersRepository, MiRegistrationTicket, MiMeta } from '@/models/_.js';
 import type { Config } from '@/config.js';
 import { CaptchaService } from '@/core/CaptchaService.js';
 import { IdService } from '@/core/IdService.js';
 import { SignupService } from '@/core/SignupService.js';
+import { UtilityService } from '@/core/UtilityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { EmailService } from '@/core/EmailService.js';
 import { MiLocalUser } from '@/models/User.js';
@@ -49,6 +50,7 @@ export class SignupApiService {
 		private idService: IdService,
 		private captchaService: CaptchaService,
 		private signupService: SignupService,
+		private utilityService: UtilityService,
 		private signinService: SigninService,
 		private emailService: EmailService,
 	) {
@@ -63,6 +65,7 @@ export class SignupApiService {
 				host?: string;
 				invitationCode?: string;
 				emailAddress?: string;
+				signupReason?: string;
 				'hcaptcha-response'?: string;
 				'g-recaptcha-response'?: string;
 				'turnstile-response'?: string;
@@ -111,8 +114,11 @@ export class SignupApiService {
 		const username = body['username'];
 		const password = body['password'];
 		const host: string | null = process.env.NODE_ENV === 'test' ? (body['host'] ?? null) : null;
-		const invitationCode = body['invitationCode'];
+		const invitationCode = typeof body['invitationCode'] === 'string' && body['invitationCode'].trim() !== ''
+			? body['invitationCode'].trim()
+			: undefined;
 		const emailAddress = body['emailAddress'];
+		const signupReason = body['signupReason'];
 
 		if (this.meta.emailRequiredForSignup) {
 			if (emailAddress == null || typeof emailAddress !== 'string') {
@@ -129,61 +135,94 @@ export class SignupApiService {
 
 		let ticket: MiRegistrationTicket | null = null;
 
-		// テスト時はこの機構は障害となるため無効にする
-		if (process.env.NODE_ENV !== 'test' && this.meta.disableRegistration) {
-			if (invitationCode == null || typeof invitationCode !== 'string') {
-				reply.code(400);
-				return;
+		if (process.env.NODE_ENV !== 'test') {
+			if (this.meta.disableRegistration && !this.meta.approvalRequiredForSignup) {
+				if (invitationCode == null || typeof invitationCode !== 'string') {
+					reply.code(400);
+					return;
+				}
 			}
 
-			ticket = await this.registrationTicketsRepository.findOneBy({
-				code: invitationCode,
-			});
+			if (invitationCode != null) {
+				ticket = await this.registrationTicketsRepository.findOneBy({
+					code: invitationCode,
+				});
 
-			if (ticket == null || ticket.usedById != null) {
-				reply.code(400);
-				return;
-			}
-
-			if (ticket.expiresAt && ticket.expiresAt < new Date()) {
-				reply.code(400);
-				return;
-			}
-
-			// メアド認証が有効の場合
-			if (this.meta.emailRequiredForSignup) {
-				// メアド認証済みならエラー
-				if (ticket.usedBy) {
+				if (ticket == null || ticket.usedById != null) {
 					reply.code(400);
 					return;
 				}
 
-				// 認証しておらず、メール送信から30分以内ならエラー
-				if (ticket.usedAt && ticket.usedAt.getTime() + (1000 * 60 * 30) > Date.now()) {
+				if (ticket.expiresAt && ticket.expiresAt < new Date()) {
 					reply.code(400);
 					return;
 				}
-			} else if (ticket.usedAt) {
-				reply.code(400);
-				return;
+
+				// メアド認証が有効の場合
+				if (this.meta.emailRequiredForSignup) {
+					// メアド認証済みならエラー
+					if (ticket.usedBy) {
+						reply.code(400);
+						return;
+					}
+
+					// 認証しておらず、メール送信から30分以内ならエラー
+					if (ticket.usedAt && ticket.usedAt.getTime() + (1000 * 60 * 30) > Date.now()) {
+						reply.code(400);
+						return;
+					}
+				} else if (ticket.usedAt) {
+					reply.code(400);
+					return;
+				}
 			}
 		}
 
+		if (this.meta.approvalRequiredForSignup && ticket == null && (typeof signupReason !== 'string' || signupReason.trim() === '')) {
+			reply.code(400);
+			return;
+		}
+
+		if (!this.userEntityService.validateLocalUsername(username) || !this.userEntityService.validatePassword(password)) {
+			reply.code(400);
+			return;
+		}
+
+		const isUnavailableUsername = this.meta.rootUserId != null && (
+			this.meta.preservedUsernames.map(x => x.toLowerCase()).includes(username.toLowerCase()) ||
+			this.utilityService.isKeyWordIncluded(username.toLowerCase(), this.meta.prohibitedWordsForNameOfUser)
+		);
+
+		if (
+			await this.usersRepository.exists({ where: { usernameLower: username.toLowerCase(), host: IsNull() } }) ||
+			await this.userPendingsRepository.exists({ where: { username: ILike(username) } }) ||
+			await this.usedUsernamesRepository.exists({ where: { username: username.toLowerCase() } }) ||
+			isUnavailableUsername
+		) {
+			throw new FastifyReplyError(400, 'DUPLICATED_USERNAME');
+		}
+
+		const requiresApproval = this.meta.approvalRequiredForSignup && ticket == null;
+
+		if (requiresApproval && !this.meta.emailRequiredForSignup) {
+			const approvalTicket = secureRndstr(24, { chars: '0123456789' });
+			const salt = await bcrypt.genSalt(8);
+			const hash = await bcrypt.hash(password, salt);
+
+			await this.userPendingsRepository.insertOne({
+				id: this.idService.gen(),
+				code: secureRndstr(32, { chars: L_CHARS }),
+				email: '',
+				username,
+				password: hash,
+				signupReason: signupReason!.trim(),
+				approvalTicket,
+			});
+
+			return { approvalTicket };
+		}
+
 		if (this.meta.emailRequiredForSignup) {
-			if (await this.usersRepository.exists({ where: { usernameLower: username.toLowerCase(), host: IsNull() } })) {
-				throw new FastifyReplyError(400, 'DUPLICATED_USERNAME');
-			}
-
-			// Check deleted username duplication
-			if (await this.usedUsernamesRepository.exists({ where: { username: username.toLowerCase() } })) {
-				throw new FastifyReplyError(400, 'USED_USERNAME');
-			}
-
-			const isPreserved = this.meta.preservedUsernames.map(x => x.toLowerCase()).includes(username.toLowerCase());
-			if (isPreserved) {
-				throw new FastifyReplyError(400, 'DENIED_USERNAME');
-			}
-
 			const code = secureRndstr(16, { chars: L_CHARS });
 
 			// Generate hash of password
@@ -196,6 +235,8 @@ export class SignupApiService {
 				email: emailAddress!,
 				username: username,
 				password: hash,
+				signupReason: signupReason ?? null,
+				approvalTicket: null,
 			});
 
 			const link = `${this.config.url}/signup-complete/${code}`;
@@ -216,7 +257,10 @@ export class SignupApiService {
 		} else {
 			try {
 				const { account, secret } = await this.signupService.signup({
-					username, password, host,
+					username,
+					password,
+					host,
+					signupReason: signupReason ?? null,
 				});
 
 				const res = await this.userEntityService.pack(account, account, {
@@ -255,12 +299,24 @@ export class SignupApiService {
 				throw new FastifyReplyError(400, 'EXPIRED');
 			}
 
+			const ticket = await this.registrationTicketsRepository.findOneBy({ pendingUserId: pendingUser.id });
+
+			if (this.meta.approvalRequiredForSignup && ticket == null) {
+				const approvalTicket = pendingUser.approvalTicket ?? secureRndstr(24, { chars: '0123456789' });
+				await this.userPendingsRepository.update(pendingUser.id, {
+					approvalTicket,
+				});
+
+				return { approvalTicket };
+			}
+
 			const { account } = await this.signupService.signup({
 				username: pendingUser.username,
 				passwordHash: pendingUser.password,
+				signupReason: pendingUser.signupReason,
 			});
 
-			this.userPendingsRepository.delete({
+			await this.userPendingsRepository.delete({
 				id: pendingUser.id,
 			});
 
@@ -272,7 +328,6 @@ export class SignupApiService {
 				emailVerifyCode: null,
 			});
 
-			const ticket = await this.registrationTicketsRepository.findOneBy({ pendingUserId: pendingUser.id });
 			if (ticket) {
 				await this.registrationTicketsRepository.update(ticket.id, {
 					usedBy: account,

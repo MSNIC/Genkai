@@ -19,7 +19,7 @@ import {
 	SignupPendingRequest,
 	SignupPendingResponse,
 	SignupRequest,
-	SignupResponse,
+	SignupResult,
 	I2faRegisterKeyResponse,
 	I2faKeyDoneRequest,
 } from './entities.js';
@@ -85,7 +85,7 @@ export type Endpoints = Overwrite<
 		// api.jsonには載せないものなのでここで定義
 		'signup': {
 			req: SignupRequest;
-			res: SignupResponse;
+			res: SignupResult;
 		},
 		// api.jsonには載せないものなのでここで定義
 		'signup-pending': {

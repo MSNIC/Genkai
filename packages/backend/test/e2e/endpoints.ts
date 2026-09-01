@@ -57,6 +57,7 @@ describe('Endpoints', () => {
 
 			assert.strictEqual(res.status, 200);
 			assert.strictEqual(typeof res.body === 'object' && !Array.isArray(res.body), true);
+			assert.ok(!('approvalTicket' in res.body));
 			assert.strictEqual(res.body.username, me.username);
 		});
 
@@ -67,6 +68,65 @@ describe('Endpoints', () => {
 			});
 
 			assert.strictEqual(res.status, 400);
+		});
+
+		test('登録審査と問い合わせのフローが完了する', async () => {
+			await api('admin/update-meta', {
+				approvalRequiredForSignup: true,
+				disableRegistration: true,
+			}, alice);
+
+			try {
+				const withoutReason = await api('signup', {
+					username: 'approvalwithoutreason',
+					password: 'test',
+				});
+				assert.strictEqual(withoutReason.status, 400);
+
+				const signupResult = await api('signup', {
+					username: 'approvalpending',
+					password: 'test',
+					invitationCode: '',
+					signupReason: 'I would like to join this server.',
+				});
+				assert.strictEqual(signupResult.status, 200);
+				assert.ok('approvalTicket' in signupResult.body);
+
+				const approvalTicket = signupResult.body.approvalTicket;
+				const connection = await initTestDb(true);
+				const users = connection.getRepository(MiUser);
+				assert.strictEqual(await users.existsBy({ usernameLower: 'approvalpending' }), false);
+
+				const pendingStatus = await api('signup/check-status', { approvalTicket });
+				assert.strictEqual(pendingStatus.status, 200);
+				assert.strictEqual(pendingStatus.body.status, 'pending');
+
+				const sendMessageResult = await api('signup/send-message', {
+					approvalTicket,
+					message: 'Additional information.',
+				});
+				assert.strictEqual(sendMessageResult.status, 204);
+
+				const approvals = await api('admin/approvals/list', {}, alice);
+				assert.strictEqual(approvals.status, 200);
+				const pendingUser = approvals.body.find(user => user.approvalTicket === approvalTicket);
+				assert.ok(pendingUser);
+				assert.strictEqual(pendingUser.messages.at(-1)?.message, 'Additional information.');
+				assert.strictEqual(pendingUser.messages.at(-1)?.isFromAdmin, false);
+
+				const approveResult = await api('admin/approvals/approve', { userId: pendingUser.id }, alice);
+				assert.strictEqual(approveResult.status, 204);
+				assert.strictEqual(await users.existsBy({ usernameLower: 'approvalpending' }), true);
+				await connection.destroy();
+
+				const approvedStatus = await api('signup/check-status', { approvalTicket });
+				assert.strictEqual(approvedStatus.body.status, 'approved');
+			} finally {
+				await api('admin/update-meta', {
+					approvalRequiredForSignup: false,
+					disableRegistration: false,
+				}, alice);
+			}
 		});
 	});
 
