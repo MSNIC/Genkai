@@ -105,6 +105,10 @@ export const ROUTE_DEF = [{
 		name: 'notifications',
 		component: page(() => import('@/pages/settings/notifications.vue')),
 	}, {
+		path: '/eew',
+		name: 'eew',
+		component: page(() => import('@/pages/settings/eew.vue')),
+	}, {
 		path: '/email',
 		name: 'email',
 		component: page(() => import('@/pages/settings/email.vue')),

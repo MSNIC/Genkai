@@ -88,6 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </component>
 
 <XStreamIndicator/>
+<MkEEWAlert/>
 
 <div v-if="pendingApiRequestsCount > 0" id="wait"></div>
 
@@ -122,6 +123,7 @@ import XNavbar from '@/ui/_common_/navbar.vue';
 
 const XStreamIndicator = defineAsyncComponent(() => import('./stream-indicator.vue'));
 const XWidgets = defineAsyncComponent(() => import('./widgets.vue'));
+const MkEEWAlert = defineAsyncComponent(() => import('@/components/MkEEWAlert.vue'));
 
 const drawerMenuShowing = defineModel<boolean>('drawerMenuShowing');
 const widgetsShowing = defineModel<boolean>('widgetsShowing');

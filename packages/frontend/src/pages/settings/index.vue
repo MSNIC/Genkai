@@ -99,6 +99,11 @@ const menuDef = computed<SuperMenuDef[]>(() => [{
 		to: '/settings/notifications',
 		active: currentPage.value?.route.name === 'notifications',
 	}, {
+		icon: 'ti ti-alert-triangle',
+		text: '緊急地震速報',
+		to: '/settings/eew',
+		active: currentPage.value?.route.name === 'eew',
+	}, {
 		icon: 'ti ti-mail',
 		text: i18n.ts.email,
 		to: '/settings/email',

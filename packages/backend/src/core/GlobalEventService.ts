@@ -43,6 +43,12 @@ export interface BroadcastTypes {
 	announcementCreated: {
 		announcement: Packed<'Announcement'>;
 	};
+	eew: {
+		data: any;
+	};
+	quakeInfo: {
+		data: any;
+	};
 }
 
 export interface MainEventTypes {

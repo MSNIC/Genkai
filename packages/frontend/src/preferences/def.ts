@@ -542,4 +542,26 @@ export const PREF_DEF = definePreferences({
 	'experimental.enableWebTranslatorApi': {
 		default: false,
 	},
+
+	// EEW (Earthquake Early Warning) Settings
+	'eew.enabled': {
+		accountDependent: true,
+		default: true,
+	},
+	'eew.sound': {
+		accountDependent: true,
+		default: { type: 'syuilo/queue-jammed', volume: 1 } as SoundStore,
+	},
+	'eew.showMap': {
+		accountDependent: true,
+		default: false,
+	},
+	'eew.autoClose': {
+		accountDependent: true,
+		default: true,
+	},
+	'eew.autoCloseDelay': {
+		accountDependent: true,
+		default: 60, // seconds
+	},
 });

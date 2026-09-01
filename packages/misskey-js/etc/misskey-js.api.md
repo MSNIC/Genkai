@@ -128,6 +128,21 @@ type AdminAnnouncementsListResponse = operations['admin___announcements___list']
 type AdminAnnouncementsUpdateRequest = operations['admin___announcements___update']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
+type AdminApprovalsApproveRequest = operations['admin___approvals___approve']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type AdminApprovalsListRequest = operations['admin___approvals___list']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type AdminApprovalsListResponse = operations['admin___approvals___list']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type AdminApprovalsRejectRequest = operations['admin___approvals___reject']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type AdminApprovalsSendMessageRequest = operations['admin___approvals___send-message']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type AdminAvatarDecorationsCreateRequest = operations['admin___avatar-decorations___create']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1386,6 +1401,9 @@ type DriveStreamRequest = operations['drive___stream']['requestBody']['content']
 type DriveStreamResponse = operations['drive___stream']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type EewTestResponse = operations['eew___test']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
 type EmailAddressAvailableRequest = operations['email-address___available']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1459,7 +1477,7 @@ export type Endpoints = Overwrite<Endpoints_2, {
     };
     'signup': {
         req: SignupRequest;
-        res: SignupResponse;
+        res: SignupResult;
     };
     'signup-pending': {
         req: SignupPendingRequest;
@@ -1525,7 +1543,10 @@ declare namespace entities {
         AnnouncementCreated,
         SignupRequest,
         SignupResponse,
+        SignupApprovalPendingResponse,
+        SignupResult,
         SignupPendingRequest,
+        SignupPendingSuccessResponse,
         SignupPendingResponse,
         SigninFlowRequest,
         SigninFlowResponse,
@@ -1565,6 +1586,11 @@ declare namespace entities {
         AdminAnnouncementsListRequest,
         AdminAnnouncementsListResponse,
         AdminAnnouncementsUpdateRequest,
+        AdminApprovalsApproveRequest,
+        AdminApprovalsListRequest,
+        AdminApprovalsListResponse,
+        AdminApprovalsRejectRequest,
+        AdminApprovalsSendMessageRequest,
         AdminAvatarDecorationsCreateRequest,
         AdminAvatarDecorationsCreateResponse,
         AdminAvatarDecorationsDeleteRequest,
@@ -1853,6 +1879,7 @@ declare namespace entities {
         DriveFoldersUpdateResponse,
         DriveStreamRequest,
         DriveStreamResponse,
+        EewTestResponse,
         EmailAddressAvailableRequest,
         EmailAddressAvailableResponse,
         EmojiRequest,
@@ -2128,6 +2155,9 @@ declare namespace entities {
         RolesUsersRequest,
         RolesUsersResponse,
         ServerInfoResponse,
+        SignupCheckStatusRequest,
+        SignupCheckStatusResponse,
+        SignupSendMessageRequest,
         StatsResponse,
         SwRegisterRequest,
         SwRegisterResponse,
@@ -3452,12 +3482,26 @@ type SigninWithPasskeyResponse = {
 };
 
 // @public (undocumented)
+type SignupApprovalPendingResponse = {
+    approvalTicket: string;
+};
+
+// @public (undocumented)
+type SignupCheckStatusRequest = operations['signup___check-status']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type SignupCheckStatusResponse = operations['signup___check-status']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
 type SignupPendingRequest = {
     code: string;
 };
 
 // @public (undocumented)
-type SignupPendingResponse = {
+type SignupPendingResponse = SignupPendingSuccessResponse | SignupApprovalPendingResponse;
+
+// @public (undocumented)
+type SignupPendingSuccessResponse = {
     id: User['id'];
     i: string;
 };
@@ -3469,6 +3513,7 @@ type SignupRequest = {
     host?: string;
     invitationCode?: string;
     emailAddress?: string;
+    signupReason?: string;
     'hcaptcha-response'?: string | null;
     'g-recaptcha-response'?: string | null;
     'turnstile-response'?: string | null;
@@ -3480,6 +3525,12 @@ type SignupRequest = {
 type SignupResponse = MeDetailed & {
     token: string;
 };
+
+// @public (undocumented)
+type SignupResult = SignupResponse | SignupApprovalPendingResponse;
+
+// @public (undocumented)
+type SignupSendMessageRequest = operations['signup___send-message']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type StatsResponse = operations['stats']['responses']['200']['content']['application/json'];

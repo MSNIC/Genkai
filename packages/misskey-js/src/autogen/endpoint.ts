@@ -29,6 +29,11 @@ import type {
 	AdminAnnouncementsListRequest,
 	AdminAnnouncementsListResponse,
 	AdminAnnouncementsUpdateRequest,
+	AdminApprovalsApproveRequest,
+	AdminApprovalsListRequest,
+	AdminApprovalsListResponse,
+	AdminApprovalsRejectRequest,
+	AdminApprovalsSendMessageRequest,
 	AdminAvatarDecorationsCreateRequest,
 	AdminAvatarDecorationsCreateResponse,
 	AdminAvatarDecorationsDeleteRequest,
@@ -317,6 +322,7 @@ import type {
 	DriveFoldersUpdateResponse,
 	DriveStreamRequest,
 	DriveStreamResponse,
+	EewTestResponse,
 	EmailAddressAvailableRequest,
 	EmailAddressAvailableResponse,
 	EmojiRequest,
@@ -594,6 +600,9 @@ import type {
 	RolesUsersRequest,
 	RolesUsersResponse,
 	ServerInfoResponse,
+	SignupCheckStatusRequest,
+	SignupCheckStatusResponse,
+	SignupSendMessageRequest,
 	StatsResponse,
 	SwRegisterRequest,
 	SwRegisterResponse,
@@ -685,6 +694,10 @@ export type Endpoints = {
 	'admin/announcements/delete': { req: AdminAnnouncementsDeleteRequest; res: EmptyResponse };
 	'admin/announcements/list': { req: AdminAnnouncementsListRequest; res: AdminAnnouncementsListResponse };
 	'admin/announcements/update': { req: AdminAnnouncementsUpdateRequest; res: EmptyResponse };
+	'admin/approvals/approve': { req: AdminApprovalsApproveRequest; res: EmptyResponse };
+	'admin/approvals/list': { req: AdminApprovalsListRequest; res: AdminApprovalsListResponse };
+	'admin/approvals/reject': { req: AdminApprovalsRejectRequest; res: EmptyResponse };
+	'admin/approvals/send-message': { req: AdminApprovalsSendMessageRequest; res: EmptyResponse };
 	'admin/avatar-decorations/create': { req: AdminAvatarDecorationsCreateRequest; res: AdminAvatarDecorationsCreateResponse };
 	'admin/avatar-decorations/delete': { req: AdminAvatarDecorationsDeleteRequest; res: EmptyResponse };
 	'admin/avatar-decorations/list': { req: AdminAvatarDecorationsListRequest; res: AdminAvatarDecorationsListResponse };
@@ -876,6 +889,7 @@ export type Endpoints = {
 	'drive/folders/show': { req: DriveFoldersShowRequest; res: DriveFoldersShowResponse };
 	'drive/folders/update': { req: DriveFoldersUpdateRequest; res: DriveFoldersUpdateResponse };
 	'drive/stream': { req: DriveStreamRequest; res: DriveStreamResponse };
+	'eew/test': { req: EmptyRequest; res: EewTestResponse };
 	'email-address/available': { req: EmailAddressAvailableRequest; res: EmailAddressAvailableResponse };
 	'emoji': { req: EmojiRequest; res: EmojiResponse };
 	'emojis': { req: EmptyRequest; res: EmojisResponse };
@@ -1065,6 +1079,8 @@ export type Endpoints = {
 	'roles/show': { req: RolesShowRequest; res: RolesShowResponse };
 	'roles/users': { req: RolesUsersRequest; res: RolesUsersResponse };
 	'server-info': { req: EmptyRequest; res: ServerInfoResponse };
+	'signup/check-status': { req: SignupCheckStatusRequest; res: SignupCheckStatusResponse };
+	'signup/send-message': { req: SignupSendMessageRequest; res: EmptyResponse };
 	'stats': { req: EmptyRequest; res: StatsResponse };
 	'sw/register': { req: SwRegisterRequest; res: SwRegisterResponse };
 	'sw/show-registration': { req: SwShowRegistrationRequest; res: SwShowRegistrationResponse };

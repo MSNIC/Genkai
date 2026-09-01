@@ -173,102 +173,6 @@ export interface Locale extends ILocale {
      */
     "favorite": string;
     /**
-     * お気に入り
-     */
-    "favorites": string;
-    /**
-     * お気に入り解除
-     */
-    "unfavorite": string;
-    /**
-     * お気に入りに登録しました。
-     */
-    "favorited": string;
-    /**
-     * 既にお気に入りに登録されています。
-     */
-    "alreadyFavorited": string;
-    /**
-     * お気に入りに登録できませんでした。
-     */
-    "cantFavorite": string;
-    /**
-     * ピン留め
-     */
-    "pin": string;
-    /**
-     * ピン留め解除
-     */
-    "unpin": string;
-    /**
-     * 内容をコピー
-     */
-    "copyContent": string;
-    /**
-     * リンクをコピー
-     */
-    "copyLink": string;
-    /**
-     * リモートのリンクをコピー
-     */
-    "copyRemoteLink": string;
-    /**
-     * リノートのリンクをコピー
-     */
-    "copyLinkRenote": string;
-    /**
-     * 削除
-     */
-    "delete": string;
-    /**
-     * 削除して編集
-     */
-    "deleteAndEdit": string;
-    /**
-     * このノートを削除してもう一度編集しますか？このノートへのリアクション、リノート、返信も全て削除されます。
-     */
-    "deleteAndEditConfirm": string;
-    /**
-     * リストに追加
-     */
-    "addToList": string;
-    /**
-     * アンテナに追加
-     */
-    "addToAntenna": string;
-    /**
-     * メッセージを送信
-     */
-    "sendMessage": string;
-    /**
-     * RSSをコピー
-     */
-    "copyRSS": string;
-    /**
-     * ユーザー名をコピー
-     */
-    "copyUsername": string;
-    /**
-     * ユーザーIDをコピー
-     */
-    "copyUserId": string;
-    /**
-     * ノートIDをコピー
-     */
-    "copyNoteId": string;
-    /**
-     * ファイルIDをコピー
-     */
-    "copyFileId": string;
-    /**
-     * フォルダーIDをコピー
-     */
-    "copyFolderId": string;
-    /**
-     * プロフィールURLをコピー
-     */
-    "copyProfileUrl": string;
-    /**
      * ユーザーを検索
      */
     "searchUser": string;
@@ -2029,6 +1933,10 @@ export interface Locale extends ILocale {
      */
     "invitationCode": string;
     /**
+     * 招待コードを使用すると審査をスキップできます
+     */
+    "invitationCodeSkipsApproval": string;
+    /**
      * 確認しています
      */
     "checking": string;
@@ -3728,6 +3636,122 @@ export interface Locale extends ILocale {
      * アカウント登録にメールアドレスを必須にする
      */
     "emailRequiredForSignup": string;
+    /**
+     * アカウント登録に審査を必須にする
+     */
+    "approvalRequiredForSignup": string;
+    /**
+     * 現在このサーバーは登録審査制です。登録後、管理者による審査が行われます。
+     */
+    "approvalRequiredToRegister": string;
+    /**
+     * 登録理由
+     */
+    "signupReason": string;
+    /**
+     * サーバーへの登録理由を記入してください
+     */
+    "signupReasonDescription": string;
+    /**
+     * お問い合わせ番号
+     */
+    "approvalTicket": string;
+    /**
+     * 登録申請を受け付けました
+     */
+    "approvalRequestSubmitted": string;
+    /**
+     * お問い合わせ番号は {ticket} です。審査状況の確認と管理者との連絡に必要なため、必ず控えてください。
+     */
+    "approvalTicketDescription": ParameterizedString<"ticket">;
+    /**
+     * 登録審査管理
+     */
+    "approvalManagement": string;
+    /**
+     * 審査待ち
+     */
+    "pendingApprovals": string;
+    /**
+     * 審査待ちのユーザーはいません
+     */
+    "noApprovalsPending": string;
+    /**
+     * 承認
+     */
+    "approve": string;
+    /**
+     * 却下
+     */
+    "approvalReject": string;
+    /**
+     * ステータスを確認
+     */
+    "checkStatus": string;
+    /**
+     * お問い合わせ番号が見つかりませんでした
+     */
+    "approvalTicketNotFound": string;
+    /**
+     * 承認されました
+     */
+    "approvalApproved": string;
+    /**
+     * 審査中です
+     */
+    "approvalPending": string;
+    /**
+     * アカウント「{username}」は承認されました。ログインできます。
+     */
+    "approvalApprovedDescription": ParameterizedString<"username">;
+    /**
+     * アカウント「{username}」は現在審査中です。しばらくお待ちください。
+     */
+    "approvalPendingDescription": ParameterizedString<"username">;
+    /**
+     * {user} を承認しますか？
+     */
+    "approveConfirm": ParameterizedString<"user">;
+    /**
+     * {user} を却下しますか？アカウントは削除されます。
+     */
+    "rejectConfirm": ParameterizedString<"user">;
+    /**
+     * {user} を承認しました
+     */
+    "userApproved": ParameterizedString<"user">;
+    /**
+     * {user} を却下しました
+     */
+    "userRejected": ParameterizedString<"user">;
+    /**
+     * {user} へメッセージを送信
+     */
+    "sendMessageTo": ParameterizedString<"user">;
+    /**
+     * メッセージ
+     */
+    "message": string;
+    /**
+     * メッセージを送信しました
+     */
+    "messageSent": string;
+    /**
+     * メッセージ
+     */
+    "messages": string;
+    /**
+     * 再確認
+     */
+    "checkAgain": string;
+    /**
+     * 登録日時
+     */
+    "userRegisteredAt": string;
+    /**
+     * 戻る
+     */
+    "back": string;
     /**
      * 未読
      */
@@ -13377,5 +13401,89 @@ export interface Locale extends ILocale {
          * MFM
          */
         "mfm": string;
+    };
+    "_eew": {
+        /**
+         * 緊急地震速報
+         */
+        "title": string;
+        /**
+         * 地震を検知しました
+         */
+        "detected": string;
+        /**
+         * マグニチュード
+         */
+        "magnitude": string;
+        /**
+         * 深さ
+         */
+        "depth": string;
+        /**
+         * 震源地
+         */
+        "epicenter": string;
+        /**
+         * 予想最大震度
+         */
+        "expectedIntensity": string;
+        /**
+         * 到達予想時刻
+         */
+        "arrivalTime": string;
+        /**
+         * 閉じる
+         */
+        "closeButton": string;
+        /**
+         * 地震情報
+         */
+        "quakeInfo": string;
+        /**
+         * 最大震度
+         */
+        "maxIntensity": string;
+    };
+    "_eewSettings": {
+        /**
+         * 緊急地震速報設定
+         */
+        "title": string;
+        /**
+         * 緊急地震速報を有効にする
+         */
+        "enable": string;
+        /**
+         * 通知音
+         */
+        "sound": string;
+        /**
+         * 地図を表示
+         */
+        "showMap": string;
+        /**
+         * 自動的に閉じる
+         */
+        "autoClose": string;
+        /**
+         * 自動クローズまでの時間(秒)
+         */
+        "autoCloseDelay": string;
+        /**
+         * テスト通知を送信
+         */
+        "testNotification": string;
+        /**
+         * テスト用の緊急地震速報を表示します。よろしいですか？
+         */
+        "testConfirm": string;
+        /**
+         * テスト通知を送信しました
+         */
+        "testSuccess": string;
+        /**
+         * テスト通知の送信に失敗しました
+         */
+        "testError": string;
     };
 }

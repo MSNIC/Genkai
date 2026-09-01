@@ -1,0 +1,31 @@
+diff --git a/locales/ja-JP.yml b/locales/ja-JP.yml
+--- a/locales/ja-JP.yml
++++ b/locales/ja-JP.yml
+@@ -3582,3 +3612,27 @@ _qr:
+   scanFile: "端末の画像をスキャン"
+   raw: "テキスト"
+   mfm: "MFM"
++
++_eew:
++  title: "緊急地震速報"
++  detected: "地震を検知しました"
++  magnitude: "マグニチュード"
++  depth: "深さ"
++  epicenter: "震源地"
++  expectedIntensity: "予想最大震度"
++  arrivalTime: "到達予想時刻"
++  closeButton: "閉じる"
++  quakeInfo: "地震情報"
++  maxIntensity: "最大震度"
++
++_eewSettings:
++  title: "緊急地震速報設定"
++  enable: "緊急地震速報を有効にする"
++  sound: "通知音"
++  showMap: "地図を表示"
++  autoClose: "自動的に閉じる"
++  autoCloseDelay: "自動クローズまでの時間(秒)"
++  testNotification: "テスト通知を送信"
++  testConfirm: "テスト用の緊急地震速報を表示します。よろしいですか？"
++  testSuccess: "テスト通知を送信しました"
++  testError: "テスト通知の送信に失敗しました"

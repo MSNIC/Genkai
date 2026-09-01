@@ -327,4 +327,6 @@ export type BroadcastEvents = {
 	emojiUpdated: (payload: EmojiUpdated) => void;
 	emojiDeleted: (payload: EmojiDeleted) => void;
 	announcementCreated: (payload: AnnouncementCreated) => void;
+	eew: (payload: { data: any; }) => void;
+	quakeInfo: (payload: { data: any; }) => void;
 };
