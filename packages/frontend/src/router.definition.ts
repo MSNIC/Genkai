@@ -602,6 +602,14 @@ export const ROUTE_DEF = [{
 	component: page(() => import('@/pages/reversi/game.vue')),
 	loginRequired: false,
 }, {
+	path: '/voice-rooms',
+	component: page(() => import('@/pages/voice-rooms/index.vue')),
+	loginRequired: true,
+}, {
+	path: '/voice-rooms/:roomId',
+	component: page(() => import('@/pages/voice-rooms/room.vue')),
+	loginRequired: true,
+}, {
 	path: '/qr',
 	component: page(() => import('@/pages/qr.vue')),
 	loginRequired: true,

@@ -173,6 +173,102 @@ export interface Locale extends ILocale {
      */
     "favorite": string;
     /**
+     * お気に入り
+     */
+    "favorites": string;
+    /**
+     * お気に入り解除
+     */
+    "unfavorite": string;
+    /**
+     * お気に入りに登録しました。
+     */
+    "favorited": string;
+    /**
+     * 既にお気に入りに登録されています。
+     */
+    "alreadyFavorited": string;
+    /**
+     * お気に入りに登録できませんでした。
+     */
+    "cantFavorite": string;
+    /**
+     * ピン留め
+     */
+    "pin": string;
+    /**
+     * ピン留め解除
+     */
+    "unpin": string;
+    /**
+     * 内容をコピー
+     */
+    "copyContent": string;
+    /**
+     * リンクをコピー
+     */
+    "copyLink": string;
+    /**
+     * リモートのリンクをコピー
+     */
+    "copyRemoteLink": string;
+    /**
+     * リノートのリンクをコピー
+     */
+    "copyLinkRenote": string;
+    /**
+     * 削除
+     */
+    "delete": string;
+    /**
+     * 削除して編集
+     */
+    "deleteAndEdit": string;
+    /**
+     * このノートを削除してもう一度編集しますか？このノートへのリアクション、リノート、返信も全て削除されます。
+     */
+    "deleteAndEditConfirm": string;
+    /**
+     * リストに追加
+     */
+    "addToList": string;
+    /**
+     * アンテナに追加
+     */
+    "addToAntenna": string;
+    /**
+     * メッセージを送信
+     */
+    "sendMessage": string;
+    /**
+     * RSSをコピー
+     */
+    "copyRSS": string;
+    /**
+     * ユーザー名をコピー
+     */
+    "copyUsername": string;
+    /**
+     * ユーザーIDをコピー
+     */
+    "copyUserId": string;
+    /**
+     * ノートIDをコピー
+     */
+    "copyNoteId": string;
+    /**
+     * ファイルIDをコピー
+     */
+    "copyFileId": string;
+    /**
+     * フォルダーIDをコピー
+     */
+    "copyFolderId": string;
+    /**
+     * プロフィールURLをコピー
+     */
+    "copyProfileUrl": string;
+    /**
      * ユーザーを検索
      */
     "searchUser": string;
@@ -13485,5 +13581,155 @@ export interface Locale extends ILocale {
          * テスト通知の送信に失敗しました
          */
         "testError": string;
+    };
+    "_voiceRooms": {
+        /**
+         * スペース
+         */
+        "title": string;
+        /**
+         * スペースを作成
+         */
+        "create": string;
+        /**
+         * タイトル
+         */
+        "roomTitle": string;
+        /**
+         * 説明
+         */
+        "description": string;
+        /**
+         * すぐに開始する
+         */
+        "startImmediately": string;
+        /**
+         * このスペースを録音する
+         */
+        "record": string;
+        /**
+         * このスペースは録音されています
+         */
+        "recordingNotice": string;
+        /**
+         * 録音中
+         */
+        "recordingIndicator": string;
+        /**
+         * スペースの録音
+         */
+        "recordingPlayer": string;
+        /**
+         * 録音
+         */
+        "recordings": string;
+        /**
+         * 録音を処理しています
+         */
+        "recordingProcessing": string;
+        /**
+         * 録音に失敗しました
+         */
+        "recordingFailed": string;
+        /**
+         * ライブ
+         */
+        "live": string;
+        /**
+         * 開始前
+         */
+        "scheduled": string;
+        /**
+         * 終了
+         */
+        "ended": string;
+        /**
+         * 開催中または開始予定のスペースはありません
+         */
+        "noRooms": string;
+        /**
+         * 参加する
+         */
+        "join": string;
+        /**
+         * 退出
+         */
+        "leave": string;
+        /**
+         * 開始
+         */
+        "start": string;
+        /**
+         * 終了する
+         */
+        "end": string;
+        /**
+         * ミュート
+         */
+        "mute": string;
+        /**
+         * ミュート解除
+         */
+        "unmute": string;
+        /**
+         * 発言をリクエスト
+         */
+        "requestToSpeak": string;
+        /**
+         * 発言をリクエストしました
+         */
+        "requestedToSpeak": string;
+        /**
+         * スピーカー
+         */
+        "speakers": string;
+        /**
+         * リスナー
+         */
+        "listeners": string;
+        /**
+         * 発言リクエスト
+         */
+        "requests": string;
+        /**
+         * 新しい発言リクエストがあります
+         */
+        "newSpeakRequest": string;
+        /**
+         * 承認
+         */
+        "approve": string;
+        /**
+         * 拒否
+         */
+        "reject": string;
+        /**
+         * ホスト
+         */
+        "host": string;
+        /**
+         * 共同ホスト
+         */
+        "cohost": string;
+        /**
+         * スピーカー
+         */
+        "speaker": string;
+        /**
+         * リスナー
+         */
+        "listener": string;
+        /**
+         * マイクへアクセスできませんでした
+         */
+        "microphoneError": string;
+        /**
+         * スペースへの接続に失敗しました
+         */
+        "connectionError": string;
+        /**
+         * 音声を再生
+         */
+        "playAudio": string;
     };
 }

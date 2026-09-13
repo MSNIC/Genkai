@@ -15,6 +15,10 @@ import {
 	MiAntenna,
 	MiApp,
 	MiApprovalMessage,
+	MiVoiceRoom,
+	MiVoiceRoomParticipant,
+	MiVoiceRoomRecording,
+	MiVoiceRoomSpeakRequest,
 	MiAuthSession,
 	MiAvatarDecoration,
 	MiBlocking,
@@ -122,6 +126,30 @@ const $appsRepository: Provider = {
 const $approvalMessagesRepository: Provider = {
 	provide: DI.approvalMessagesRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiApprovalMessage).extend(miRepository as MiRepository<MiApprovalMessage>),
+	inject: [DI.db],
+};
+
+const $voiceRoomsRepository: Provider = {
+	provide: DI.voiceRoomsRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiVoiceRoom).extend(miRepository as MiRepository<MiVoiceRoom>),
+	inject: [DI.db],
+};
+
+const $voiceRoomParticipantsRepository: Provider = {
+	provide: DI.voiceRoomParticipantsRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiVoiceRoomParticipant).extend(miRepository as MiRepository<MiVoiceRoomParticipant>),
+	inject: [DI.db],
+};
+
+const $voiceRoomSpeakRequestsRepository: Provider = {
+	provide: DI.voiceRoomSpeakRequestsRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiVoiceRoomSpeakRequest).extend(miRepository as MiRepository<MiVoiceRoomSpeakRequest>),
+	inject: [DI.db],
+};
+
+const $voiceRoomRecordingsRepository: Provider = {
+	provide: DI.voiceRoomRecordingsRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiVoiceRoomRecording).extend(miRepository as MiRepository<MiVoiceRoomRecording>),
 	inject: [DI.db],
 };
 
@@ -560,6 +588,10 @@ const $reversiGamesRepository: Provider = {
 		$announcementReadsRepository,
 		$appsRepository,
 		$approvalMessagesRepository,
+		$voiceRoomsRepository,
+		$voiceRoomParticipantsRepository,
+		$voiceRoomSpeakRequestsRepository,
+		$voiceRoomRecordingsRepository,
 		$avatarDecorationsRepository,
 		$noteFavoritesRepository,
 		$noteThreadMutingsRepository,
@@ -639,6 +671,10 @@ const $reversiGamesRepository: Provider = {
 		$announcementReadsRepository,
 		$appsRepository,
 		$approvalMessagesRepository,
+		$voiceRoomsRepository,
+		$voiceRoomParticipantsRepository,
+		$voiceRoomSpeakRequestsRepository,
+		$voiceRoomRecordingsRepository,
 		$avatarDecorationsRepository,
 		$noteFavoritesRepository,
 		$noteThreadMutingsRepository,

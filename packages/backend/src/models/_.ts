@@ -84,6 +84,10 @@ import { MiUserPending } from '@/models/UserPending.js';
 import { MiUserProfile } from '@/models/UserProfile.js';
 import { MiUserPublickey } from '@/models/UserPublickey.js';
 import { MiUserSecurityKey } from '@/models/UserSecurityKey.js';
+import { MiVoiceRoom } from '@/models/VoiceRoom.js';
+import { MiVoiceRoomParticipant } from '@/models/VoiceRoomParticipant.js';
+import { MiVoiceRoomRecording } from '@/models/VoiceRoomRecording.js';
+import { MiVoiceRoomSpeakRequest } from '@/models/VoiceRoomSpeakRequest.js';
 import { MiWebhook } from '@/models/Webhook.js';
 import type { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
 
@@ -173,6 +177,10 @@ export {
 	MiChatRoomMembership,
 	MiChatRoomInvitation,
 	MiChatApproval,
+	MiVoiceRoom,
+	MiVoiceRoomParticipant,
+	MiVoiceRoomRecording,
+	MiVoiceRoomSpeakRequest,
 	MiBubbleGameRecord,
 	MiReversiGame,
 };
@@ -188,6 +196,10 @@ export type AnnouncementReadsRepository = Repository<MiAnnouncementRead> & MiRep
 export type AntennasRepository = Repository<MiAntenna> & MiRepository<MiAntenna>;
 export type AppsRepository = Repository<MiApp> & MiRepository<MiApp>;
 export type ApprovalMessagesRepository = Repository<MiApprovalMessage> & MiRepository<MiApprovalMessage>;
+export type VoiceRoomsRepository = Repository<MiVoiceRoom> & MiRepository<MiVoiceRoom>;
+export type VoiceRoomParticipantsRepository = Repository<MiVoiceRoomParticipant> & MiRepository<MiVoiceRoomParticipant>;
+export type VoiceRoomRecordingsRepository = Repository<MiVoiceRoomRecording> & MiRepository<MiVoiceRoomRecording>;
+export type VoiceRoomSpeakRequestsRepository = Repository<MiVoiceRoomSpeakRequest> & MiRepository<MiVoiceRoomSpeakRequest>;
 export type AvatarDecorationsRepository = Repository<MiAvatarDecoration> & MiRepository<MiAvatarDecoration>;
 export type AuthSessionsRepository = Repository<MiAuthSession> & MiRepository<MiAuthSession>;
 export type BlockingsRepository = Repository<MiBlocking> & MiRepository<MiBlocking>;

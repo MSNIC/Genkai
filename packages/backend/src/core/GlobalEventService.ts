@@ -271,6 +271,15 @@ export interface InternalEventTypes {
 
 type EventTypesToEventPayload<T> = EventUnionFromDictionary<UndefinedAsNullAll<SerializedAll<T>>>;
 
+export type VoiceRoomEventTypes = {
+	producerAdded: { producerId: string; userId: MiUser['id'] };
+	producerClosed: { producerId: string };
+	participantChanged: { userId: MiUser['id'] };
+	speakRequestsChanged: Record<string, never>;
+	roomStarted: { startedAt: string };
+	roomEnded: { endedAt: string };
+};
+
 // name/messages(spec) pairs dictionary
 export type GlobalEvents = {
 	internal: {
@@ -328,6 +337,10 @@ export type GlobalEvents = {
 	reversiGame: {
 		name: `reversiGameStream:${MiReversiGame['id']}`;
 		payload: EventTypesToEventPayload<ReversiGameEventTypes>;
+	};
+	voiceRoom: {
+		name: `voiceRoomStream:${string}`;
+		payload: EventTypesToEventPayload<VoiceRoomEventTypes>;
 	};
 };
 
@@ -440,5 +453,10 @@ export class GlobalEventService {
 	@bindThis
 	public publishReversiGameStream<K extends keyof ReversiGameEventTypes>(gameId: MiReversiGame['id'], type: K, value?: ReversiGameEventTypes[K]): void {
 		this.publish(`reversiGameStream:${gameId}`, type, typeof value === 'undefined' ? null : value);
+	}
+
+	@bindThis
+	public publishVoiceRoomStream<K extends keyof VoiceRoomEventTypes>(roomId: string, type: K, value?: VoiceRoomEventTypes[K]): void {
+		this.publish(`voiceRoomStream:${roomId}`, type, typeof value === 'undefined' ? null : value);
 	}
 }

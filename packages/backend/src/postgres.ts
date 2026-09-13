@@ -20,6 +20,10 @@ import { MiAnnouncementRead } from '@/models/AnnouncementRead.js';
 import { MiAntenna } from '@/models/Antenna.js';
 import { MiApp } from '@/models/App.js';
 import { MiApprovalMessage } from '@/models/ApprovalMessage.js';
+import { MiVoiceRoom } from '@/models/VoiceRoom.js';
+import { MiVoiceRoomParticipant } from '@/models/VoiceRoomParticipant.js';
+import { MiVoiceRoomRecording } from '@/models/VoiceRoomRecording.js';
+import { MiVoiceRoomSpeakRequest } from '@/models/VoiceRoomSpeakRequest.js';
 import { MiAvatarDecoration } from '@/models/AvatarDecoration.js';
 import { MiAuthSession } from '@/models/AuthSession.js';
 import { MiBlocking } from '@/models/Blocking.js';
@@ -185,6 +189,10 @@ export const entities = [
 	MiInstance,
 	MiApp,
 	MiApprovalMessage,
+	MiVoiceRoom,
+	MiVoiceRoomParticipant,
+	MiVoiceRoomRecording,
+	MiVoiceRoomSpeakRequest,
 	MiAvatarDecoration,
 	MiAuthSession,
 	MiAccessToken,

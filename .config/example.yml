@@ -397,6 +397,15 @@ proxyBypassHosts:
 # * Perform image compression (on a different server resource than the main process)
 #mediaProxy: https://example.com/proxy
 
+# Voice rooms use mediasoup to relay live audio. Set announcedAddress to the
+# public IP or hostname that clients can reach, and open the configured UDP range.
+#voiceRooms:
+#  enabled: true
+#  listenIp: 0.0.0.0
+#  announcedAddress: voice.example.com
+#  rtcMinPort: 40000
+#  rtcMaxPort: 40100
+
 # Movie Thumbnail Generation URL
 # There is no reference implementation.
 # For example, Misskey will point to the following URL:

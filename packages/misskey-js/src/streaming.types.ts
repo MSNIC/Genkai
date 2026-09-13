@@ -242,6 +242,31 @@ export type Channels = {
 			claimTimeIsUp: null | Record<string, never>;
 		}
 	};
+	voiceRoom: {
+		params: {
+			roomId: string;
+		};
+		events: {
+			ready: () => void;
+			response: (payload: { requestId: string; ok: boolean; data?: unknown; error?: string; }) => void;
+			producerAdded: (payload: { producerId: string; userId: User['id']; }) => void;
+			producerClosed: (payload: { producerId: string; }) => void;
+			participantChanged: (payload: { userId: User['id']; }) => void;
+			speakRequestsChanged: () => void;
+			roomStarted: (payload: { startedAt: string; }) => void;
+			roomEnded: (payload: { endedAt: string; }) => void;
+		};
+		receives: {
+			getRtpCapabilities: { requestId: string; };
+			createTransport: { requestId: string; direction: 'send' | 'recv'; };
+			connectTransport: { requestId: string; transportId: string; dtlsParameters: Record<string, unknown>; };
+			produce: { requestId: string; transportId: string; rtpParameters: Record<string, unknown>; };
+			listProducers: { requestId: string; };
+			consume: { requestId: string; transportId: string; producerId: string; rtpCapabilities: Record<string, unknown>; };
+			resumeConsumer: { requestId: string; consumerId: string; };
+			setMuted: { requestId: string; muted: boolean; };
+		};
+	};
 	chatUser: {
 		params: {
 			otherId: string;

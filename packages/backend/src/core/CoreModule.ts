@@ -80,6 +80,9 @@ import { RegistryApiService } from './RegistryApiService.js';
 import { ReversiService } from './ReversiService.js';
 import { PageService } from './PageService.js';
 import { EarthquakeService } from './EarthquakeService.js';
+import { VoiceRoomService } from './VoiceRoomService.js';
+import { VoiceRoomMediaService } from './VoiceRoomMediaService.js';
+import { VoiceRoomRecordingService } from './VoiceRoomRecordingService.js';
 
 import { ChartLoggerService } from './chart/ChartLoggerService.js';
 import FederationChart from './chart/charts/federation.js';
@@ -386,6 +389,9 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		ReversiService,
 		PageService,
 		EarthquakeService,
+		VoiceRoomService,
+		VoiceRoomMediaService,
+		VoiceRoomRecordingService,
 
 		ChartLoggerService,
 		FederationChart,
@@ -689,6 +695,9 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		ReversiService,
 		PageService,
 		EarthquakeService,
+		VoiceRoomService,
+		VoiceRoomMediaService,
+		VoiceRoomRecordingService,
 
 		FederationChart,
 		NotesChart,

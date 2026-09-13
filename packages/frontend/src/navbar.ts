@@ -145,6 +145,12 @@ export const navbarItemDef = reactive<{
 		icon: 'ti ti-device-gamepad',
 		to: '/games',
 	},
+	voiceRooms: {
+		title: i18n.ts._voiceRooms.title,
+		icon: 'ti ti-broadcast',
+		show: computed(() => $i != null),
+		to: '/voice-rooms',
+	},
 	ui: {
 		title: i18n.ts.switchUi,
 		icon: 'ti ti-devices',

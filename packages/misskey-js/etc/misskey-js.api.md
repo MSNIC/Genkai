@@ -233,6 +233,12 @@ type AdminEmojiSetCategoryBulkRequest = operations['admin___emoji___set-category
 type AdminEmojiSetLicenseBulkRequest = operations['admin___emoji___set-license-bulk']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
+type AdminEmojiStealRequest = operations['admin___emoji___steal']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type AdminEmojiStealResponse = operations['admin___emoji___steal']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
 type AdminEmojiUpdateRequest = operations['admin___emoji___update']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -901,6 +907,73 @@ export type Channels = {
             cancel: null | Record<string, never>;
             updateSettings: ReversiUpdateSettings<ReversiUpdateKey>;
             claimTimeIsUp: null | Record<string, never>;
+        };
+    };
+    voiceRoom: {
+        params: {
+            roomId: string;
+        };
+        events: {
+            ready: () => void;
+            response: (payload: {
+                requestId: string;
+                ok: boolean;
+                data?: unknown;
+                error?: string;
+            }) => void;
+            producerAdded: (payload: {
+                producerId: string;
+                userId: User['id'];
+            }) => void;
+            producerClosed: (payload: {
+                producerId: string;
+            }) => void;
+            participantChanged: (payload: {
+                userId: User['id'];
+            }) => void;
+            speakRequestsChanged: () => void;
+            roomStarted: (payload: {
+                startedAt: string;
+            }) => void;
+            roomEnded: (payload: {
+                endedAt: string;
+            }) => void;
+        };
+        receives: {
+            getRtpCapabilities: {
+                requestId: string;
+            };
+            createTransport: {
+                requestId: string;
+                direction: 'send' | 'recv';
+            };
+            connectTransport: {
+                requestId: string;
+                transportId: string;
+                dtlsParameters: Record<string, unknown>;
+            };
+            produce: {
+                requestId: string;
+                transportId: string;
+                rtpParameters: Record<string, unknown>;
+            };
+            listProducers: {
+                requestId: string;
+            };
+            consume: {
+                requestId: string;
+                transportId: string;
+                producerId: string;
+                rtpCapabilities: Record<string, unknown>;
+            };
+            resumeConsumer: {
+                requestId: string;
+                consumerId: string;
+            };
+            setMuted: {
+                requestId: string;
+                muted: boolean;
+            };
         };
     };
     chatUser: {
@@ -1621,6 +1694,8 @@ declare namespace entities {
         AdminEmojiSetAliasesBulkRequest,
         AdminEmojiSetCategoryBulkRequest,
         AdminEmojiSetLicenseBulkRequest,
+        AdminEmojiStealRequest,
+        AdminEmojiStealResponse,
         AdminEmojiUpdateRequest,
         AdminFederationDeleteAllFilesRequest,
         AdminFederationRefreshRemoteInstanceMetadataRequest,
@@ -2229,6 +2304,28 @@ declare namespace entities {
         V2AdminEmojiListRequest,
         V2AdminEmojiListResponse,
         VerifyEmailRequest,
+        VoiceRoomsCreateRequest,
+        VoiceRoomsCreateResponse,
+        VoiceRoomsEndRequest,
+        VoiceRoomsEndResponse,
+        VoiceRoomsJoinRequest,
+        VoiceRoomsJoinResponse,
+        VoiceRoomsLeaveRequest,
+        VoiceRoomsListRequest,
+        VoiceRoomsListResponse,
+        VoiceRoomsListParticipantsRequest,
+        VoiceRoomsListParticipantsResponse,
+        VoiceRoomsListRecordingsRequest,
+        VoiceRoomsListRecordingsResponse,
+        VoiceRoomsListSpeakRequestsRequest,
+        VoiceRoomsListSpeakRequestsResponse,
+        VoiceRoomsRequestToSpeakRequest,
+        VoiceRoomsRequestToSpeakResponse,
+        VoiceRoomsRespondToSpeakRequestRequest,
+        VoiceRoomsShowRequest,
+        VoiceRoomsShowResponse,
+        VoiceRoomsStartRequest,
+        VoiceRoomsStartResponse,
         Error_2 as Error,
         UserLite,
         UserDetailedNotMeOnly,
@@ -3818,6 +3915,72 @@ type V2AdminEmojiListResponse = operations['v2___admin___emoji___list']['respons
 
 // @public (undocumented)
 type VerifyEmailRequest = operations['verify-email']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsCreateRequest = operations['voice-rooms___create']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsCreateResponse = operations['voice-rooms___create']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsEndRequest = operations['voice-rooms___end']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsEndResponse = operations['voice-rooms___end']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsJoinRequest = operations['voice-rooms___join']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsJoinResponse = operations['voice-rooms___join']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsLeaveRequest = operations['voice-rooms___leave']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsListParticipantsRequest = operations['voice-rooms___list-participants']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsListParticipantsResponse = operations['voice-rooms___list-participants']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsListRecordingsRequest = operations['voice-rooms___list-recordings']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsListRecordingsResponse = operations['voice-rooms___list-recordings']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsListRequest = operations['voice-rooms___list']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsListResponse = operations['voice-rooms___list']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsListSpeakRequestsRequest = operations['voice-rooms___list-speak-requests']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsListSpeakRequestsResponse = operations['voice-rooms___list-speak-requests']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsRequestToSpeakRequest = operations['voice-rooms___request-to-speak']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsRequestToSpeakResponse = operations['voice-rooms___request-to-speak']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsRespondToSpeakRequestRequest = operations['voice-rooms___respond-to-speak-request']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsShowRequest = operations['voice-rooms___show']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsShowResponse = operations['voice-rooms___show']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsStartRequest = operations['voice-rooms___start']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type VoiceRoomsStartResponse = operations['voice-rooms___start']['responses']['200']['content']['application/json'];
 
 // Warnings were encountered during analysis:
 //

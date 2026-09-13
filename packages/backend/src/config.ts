@@ -113,6 +113,13 @@ type Source = {
 
 	mediaProxy?: string;
 	videoThumbnailGenerator?: string;
+	voiceRooms?: {
+		enabled?: boolean;
+		listenIp?: string;
+		announcedAddress?: string;
+		rtcMinPort?: number;
+		rtcMaxPort?: number;
+	};
 
 	perChannelMaxNoteCacheCount?: number;
 	perUserNotificationsMaxCount?: number;
@@ -214,6 +221,13 @@ export type Config = {
 	mediaProxy: string;
 	externalMediaProxyEnabled: boolean;
 	videoThumbnailGenerator: string | null;
+	voiceRooms: {
+		enabled: boolean;
+		listenIp: string;
+		announcedAddress: string | undefined;
+		rtcMinPort: number;
+		rtcMaxPort: number;
+	};
 	redis: RedisOptionsResolved;
 	redisForPubsub: RedisOptionsResolved;
 	redisForJobQueue: RedisOptionsResolved;
@@ -349,6 +363,13 @@ export function loadConfig(): Config {
 		videoThumbnailGenerator: config.videoThumbnailGenerator ?
 			config.videoThumbnailGenerator.endsWith('/') ? config.videoThumbnailGenerator.substring(0, config.videoThumbnailGenerator.length - 1) : config.videoThumbnailGenerator
 			: null,
+		voiceRooms: {
+			enabled: config.voiceRooms?.enabled ?? false,
+			listenIp: config.voiceRooms?.listenIp ?? '0.0.0.0',
+			announcedAddress: config.voiceRooms?.announcedAddress,
+			rtcMinPort: config.voiceRooms?.rtcMinPort ?? 40000,
+			rtcMaxPort: config.voiceRooms?.rtcMaxPort ?? 40100,
+		},
 		userAgent: `Misskey/${version} (${config.url})`,
 		frontendManifestExists: frontendManifestExists,
 		frontendEmbedManifestExists: frontendEmbedManifestExists,
