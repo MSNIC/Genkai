@@ -33,6 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@error="errored = true"
 	@load="errored = false"
 	@click="onClick"
+	@contextmenu.stop="onContextmenu"
 />
 </template>
 
@@ -47,7 +48,7 @@ import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
 import MkCustomEmojiDetailedDialog from '@/components/MkCustomEmojiDetailedDialog.vue';
-import { $i } from '@/i.js';
+import { $i, iAmModerator } from '@/i.js';
 import { prefer } from '@/preferences.js';
 import { DI } from '@/di.js';
 import { makeEmojiMuteKey, mute as muteEmoji, unmute as unmuteEmoji, checkMuted as checkEmojiMuted } from '@/utility/emoji-mute';
@@ -103,6 +104,28 @@ const url = computed(() => {
 
 const alt = computed(() => `:${customEmojiName.value}:`);
 const errored = ref(url.value == null);
+
+const canImportRemoteEmoji = computed(() => (
+	!isLocal.value &&
+	props.host != null &&
+	$i != null &&
+	(iAmModerator || $i.policies.canManageCustomEmojis)
+));
+
+function onContextmenu(ev: PointerEvent) {
+	if (!canImportRemoteEmoji.value) return;
+
+	os.contextMenu([{
+		text: i18n.ts.import,
+		icon: 'ti ti-plus',
+		action: async () => {
+			await os.apiWithDialog('admin/emoji/steal', {
+				name: customEmojiName.value,
+				host: props.host!,
+			});
+		},
+	}], ev);
+}
 
 function onClick(ev: PointerEvent) {
 	if (props.menu) {

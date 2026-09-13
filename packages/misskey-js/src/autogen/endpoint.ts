@@ -64,6 +64,8 @@ import type {
 	AdminEmojiSetAliasesBulkRequest,
 	AdminEmojiSetCategoryBulkRequest,
 	AdminEmojiSetLicenseBulkRequest,
+	AdminEmojiStealRequest,
+	AdminEmojiStealResponse,
 	AdminEmojiUpdateRequest,
 	AdminFederationDeleteAllFilesRequest,
 	AdminFederationRefreshRemoteInstanceMetadataRequest,
@@ -674,6 +676,28 @@ import type {
 	V2AdminEmojiListRequest,
 	V2AdminEmojiListResponse,
 	VerifyEmailRequest,
+	VoiceRoomsCreateRequest,
+	VoiceRoomsCreateResponse,
+	VoiceRoomsEndRequest,
+	VoiceRoomsEndResponse,
+	VoiceRoomsJoinRequest,
+	VoiceRoomsJoinResponse,
+	VoiceRoomsLeaveRequest,
+	VoiceRoomsListRequest,
+	VoiceRoomsListResponse,
+	VoiceRoomsListParticipantsRequest,
+	VoiceRoomsListParticipantsResponse,
+	VoiceRoomsListRecordingsRequest,
+	VoiceRoomsListRecordingsResponse,
+	VoiceRoomsListSpeakRequestsRequest,
+	VoiceRoomsListSpeakRequestsResponse,
+	VoiceRoomsRequestToSpeakRequest,
+	VoiceRoomsRequestToSpeakResponse,
+	VoiceRoomsRespondToSpeakRequestRequest,
+	VoiceRoomsShowRequest,
+	VoiceRoomsShowResponse,
+	VoiceRoomsStartRequest,
+	VoiceRoomsStartResponse,
 } from './entities.js';
 
 export type Endpoints = {
@@ -722,6 +746,7 @@ export type Endpoints = {
 	'admin/emoji/set-aliases-bulk': { req: AdminEmojiSetAliasesBulkRequest; res: EmptyResponse };
 	'admin/emoji/set-category-bulk': { req: AdminEmojiSetCategoryBulkRequest; res: EmptyResponse };
 	'admin/emoji/set-license-bulk': { req: AdminEmojiSetLicenseBulkRequest; res: EmptyResponse };
+	'admin/emoji/steal': { req: AdminEmojiStealRequest; res: AdminEmojiStealResponse };
 	'admin/emoji/update': { req: AdminEmojiUpdateRequest; res: EmptyResponse };
 	'admin/federation/delete-all-files': { req: AdminFederationDeleteAllFilesRequest; res: EmptyResponse };
 	'admin/federation/refresh-remote-instance-metadata': { req: AdminFederationRefreshRemoteInstanceMetadataRequest; res: EmptyResponse };
@@ -1122,6 +1147,18 @@ export type Endpoints = {
 	'users/update-memo': { req: UsersUpdateMemoRequest; res: EmptyResponse };
 	'v2/admin/emoji/list': { req: V2AdminEmojiListRequest; res: V2AdminEmojiListResponse };
 	'verify-email': { req: VerifyEmailRequest; res: EmptyResponse };
+	'voice-rooms/create': { req: VoiceRoomsCreateRequest; res: VoiceRoomsCreateResponse };
+	'voice-rooms/end': { req: VoiceRoomsEndRequest; res: VoiceRoomsEndResponse };
+	'voice-rooms/join': { req: VoiceRoomsJoinRequest; res: VoiceRoomsJoinResponse };
+	'voice-rooms/leave': { req: VoiceRoomsLeaveRequest; res: EmptyResponse };
+	'voice-rooms/list': { req: VoiceRoomsListRequest; res: VoiceRoomsListResponse };
+	'voice-rooms/list-participants': { req: VoiceRoomsListParticipantsRequest; res: VoiceRoomsListParticipantsResponse };
+	'voice-rooms/list-recordings': { req: VoiceRoomsListRecordingsRequest; res: VoiceRoomsListRecordingsResponse };
+	'voice-rooms/list-speak-requests': { req: VoiceRoomsListSpeakRequestsRequest; res: VoiceRoomsListSpeakRequestsResponse };
+	'voice-rooms/request-to-speak': { req: VoiceRoomsRequestToSpeakRequest; res: VoiceRoomsRequestToSpeakResponse };
+	'voice-rooms/respond-to-speak-request': { req: VoiceRoomsRespondToSpeakRequestRequest; res: EmptyResponse };
+	'voice-rooms/show': { req: VoiceRoomsShowRequest; res: VoiceRoomsShowResponse };
+	'voice-rooms/start': { req: VoiceRoomsStartRequest; res: VoiceRoomsStartResponse };
 };
 
 /**
